@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('songs', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('choir_id')->constrained();
-            $table->foreignUuid('recorded_by')->constrained('users');
+            $table->foreignUuid('user_id')->constrained();
             $table->enum('category', ['adoration', 'louange', 'folklore']);
             $table->string('title');
             $table->string('audio_url');
