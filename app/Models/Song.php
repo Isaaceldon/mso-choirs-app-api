@@ -6,24 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property string $id
- * @property string $tabernacle_id
- * @property string $role_id
- * @property string $name
- * @property string $email
- * @property string $phone
- * @property string $email_verified_at
- * @property string $password
- * @property string $remember_token
+ * @property string $choir_id
+ * @property string $user_id
+ * @property string $category
+ * @property string $title
+ * @property string $audio_url
  * @property string $created_at
  * @property string $updated_at
  * @property Comment[] $comments
  * @property Favorite[] $favorites
  * @property Playlist[] $playlists
- * @property Song[] $songs
- * @property Role $role
- * @property Tabernacle $tabernacle
+ * @property Choir $choir
+ * @property User $user
  */
-class User extends Model
+class Song extends Model
 {
     /**
      * The "type" of the auto-incrementing ID.
@@ -42,7 +38,7 @@ class User extends Model
     /**
      * @var array
      */
-    protected $fillable = ['tabernacle_id', 'role_id', 'name', 'email', 'phone', 'email_verified_at', 'password', 'remember_token', 'created_at', 'updated_at'];
+    protected $fillable = ['choir_id', 'user_id', 'category', 'title', 'audio_url', 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -61,34 +57,26 @@ class User extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function playlists()
     {
-        return $this->hasMany('App\Models\Playlist');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function songs()
-    {
-        return $this->hasMany('App\Models\Song');
+        return $this->belongsToMany('App\Models\Playlist');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function role()
+    public function choir()
     {
-        return $this->belongsTo('App\Models\Role');
+        return $this->belongsTo('App\Models\Choir');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function tabernacle()
+    public function user()
     {
-        return $this->belongsTo('App\Models\Tabernacle');
+        return $this->belongsTo('App\Models\User');
     }
 }

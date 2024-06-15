@@ -18,10 +18,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone')->unique();
-            $table->string('address');
             $table->foreignUuid('tabernacle_id')->constrained();
-            $table->uuid('role_id'); // Définir role_id comme un UUID non nullable
-            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade'); // Définir la clé étrangère avec suppression en cascade
+            $table->uuid('role_id');
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

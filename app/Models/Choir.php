@@ -6,13 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property string $id
+ * @property string $tabernacle_id
  * @property string $name
- * @property string $description
+ * @property integer $members
  * @property string $created_at
  * @property string $updated_at
- * @property User[] $users
+ * @property Tabernacle $tabernacle
+ * @property Song[] $songs
  */
-class Role extends Model
+class Choir extends Model
 {
     /**
      * The "type" of the auto-incrementing ID.
@@ -31,13 +33,21 @@ class Role extends Model
     /**
      * @var array
      */
-    protected $fillable = ['name', 'description', 'created_at', 'updated_at'];
+    protected $fillable = ['tabernacle_id', 'name', 'members', 'created_at', 'updated_at'];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function tabernacle()
+    {
+        return $this->belongsTo('App\Models\Tabernacle');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function users()
+    public function songs()
     {
-        return $this->hasMany('App\Models\User');
+        return $this->hasMany('App\Models\Song');
     }
 }

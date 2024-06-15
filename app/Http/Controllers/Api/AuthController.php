@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class AuthController extends Controller
 {
@@ -14,16 +16,16 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email',
             'phone' => 'required|string|unique:users,phone',
-            'address' => 'required|string|max:255',
             'tabernacle_id' => 'required|exists:tabernacles,id',
-            'role_id' => 'required|exists:roles,id', // Valider le role_id
+            'role_id' => 'required|exists:roles,id',
             'password' => 'required|string|confirmed|min:8'
         ]);
 
         // Vérifiez si le rôle choisi est "CO" (Chef Orchestre)
-        if ($request->role_id == 'CO') {
+        $role = Role::find($request->role_id)->first();
+        if ($role->name === 'Chef Orchestre') {
             // Vérifiez si un utilisateur avec le rôle "CO" existe déjà pour ce tabernacle
-            $existingCO = User::where('role_id', 'CO')
+            $existingCO = User::where('role_id', $role->id)
                 ->where('tabernacle_id', $request->tabernacle_id)
                 ->exists();
             if ($existingCO) {
@@ -32,13 +34,11 @@ class AuthController extends Controller
         }
 
         $user = User::create([
-            'id' => (string) \Illuminate\Support\Str::uuid(),
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
-            'address' => $request->address,
             'tabernacle_id' => $request->tabernacle_id,
-            'role_id' => $request->role_id, // Utilisez directement le role_id fourni dans la requête
+            'role_id' => $request->role_id, 
             'password' => Hash::make($request->password),
         ]);
 

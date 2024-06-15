@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('choirs', function (Blueprint $table) {
              $table->uuid('id')->primary();
             $table->string('name');
+            $table->integer('members');
             $table->foreignUuid('tabernacle_id')->constrained();
             $table->timestamps();
         });
